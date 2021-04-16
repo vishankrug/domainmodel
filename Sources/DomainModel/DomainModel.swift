@@ -148,7 +148,13 @@ public class Person {
             }
         }
     }
-    var spouse: Person? = nil
+    var spouse: Person? = nil {
+        didSet{
+            if (age <= 16){
+                spouse = nil
+            }
+        }
+    }
     
     init(firstName f: String, lastName l: String, age a: Int){
         self.firstName = f
