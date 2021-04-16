@@ -70,7 +70,7 @@ public struct Money{
         if(self.currency == money2.currency){
             return Money(amount: self.amount+money2.amount, currency:self.currency)
         } else{
-            return Money(amount: (money2.convert(self.currency)).amount+money2.amount, currency:money2.currency)
+            return Money(amount: (self.convert(money2.currency)).amount+money2.amount, currency:money2.currency)
         }
     }
     
