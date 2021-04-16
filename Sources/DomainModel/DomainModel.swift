@@ -93,8 +93,8 @@ public class Job {
         case Salary(UInt)
     }
     
-    let title: String
-    let type: JobType
+    var title: String
+    var type: JobType
 
     init(title ti: String, type ty: JobType){
         self.title = ti
@@ -112,34 +112,24 @@ public class Job {
         }
     }
     
-    func raise(byAmount he: Int) -> Int {
+    func raise(byAmount amount: Double){
         switch self.type {
         case .Hourly(let wage):
-            var ans = wage+Double(he)
-            ans.round()
-            return Int(ans)
+            self.type = JobType.Hourly(wage+amount)
         case .Salary(let salary):
-            return Int(Int(salary)+he)
+            self.type = JobType.Salary(UInt(Double(salary) + amount))
         }
     }
-    func raise(byAmount he: Double) -> Int {
+
+    func raise(byPercent amount: Double){
         switch self.type {
         case .Hourly(let wage):
-            var ans = wage+(he)
+            var ans = wage + (wage*(amount))
             ans.round()
-            return Int(ans)
+            self.type = JobType.Hourly(ans)
         case .Salary(let salary):
-            return Int(Double(salary)+he)
-        }
-    }
-    func raise(byPercent he: Double) -> Int {
-        switch self.type {
-        case .Hourly(let wage):
-            var ans = (wage*(he+1.0))
-            ans.round()
-            return Int(ans)
-        case .Salary(let salary):
-            return Int(Double(salary)*(he+1.0))
+            let ans = Double(salary) + Double(salary)*amount
+            self.type = JobType.Salary(UInt(ans))
         }
     }
 }
