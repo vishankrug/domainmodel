@@ -167,7 +167,7 @@ public class Person {
     }
     
     func toString() -> String{
-        let ans = "[Person: firstName:\(self.firstName) lastName:\(self.lastName) age:\(self.age) job:\(self.job) spouse:\(self.spouse)]"
+        let ans = "[Person: firstName:\(self.firstName) lastName:\(self.lastName) age:\(self.age) job:\(String(describing: self.job)) spouse:\(String(describing: self.spouse))]"
         return ans
     }
 }
@@ -176,9 +176,33 @@ public class Person {
 // Family
 //
 public class Family {
-    let members: {
-        spouse1: Person,
-        spouse2: Person
+    var members: [Person]
+    
+    init(spouse1: Person, spouse2: Person){
+        if((spouse1.spouse != nil) || (spouse2.spouse != nil)){
+            self.members = []
+        }
+        spouse1.spouse = spouse2
+        spouse2.spouse = spouse1
+        self.members = [spouse1, spouse2]
+    }
+    
+    func haveChild(_ child: Person) -> Bool{
+        if (self.members[0].age < 21 && self.members[1].age < 21){
+            return false
+        }
+        self.members.append(child)
+        return true
+    }
+    
+    func householdIncome() -> Int {
+        var sum = 0
+        for member in members {
+            if (member.job != nil){
+                sum = sum + member.job!.calculateIncome(2000)
+            }
+        }
+        return sum
     }
     
 }
